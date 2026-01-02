@@ -1,0 +1,66 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "Product Service API",
+		"version": "1.0.0"
+	},
+	"paths": {
+		"/api/product/getProductByProductId": {
+			"post": {
+				"summary": "Get product by product_id",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"product_id": {
+										"type": "integer"
+									}
+								},
+								"required": ["product_id"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Product found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Product"
+								}
+							}
+						}
+					},
+					"400": { "description": "Invalid request" },
+					"404": { "description": "Product not found" }
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"Product": {
+				"type": "object",
+				"properties": {
+					"product_id": { "type": "integer" },
+					"seller_user_id": { "type": "integer" },
+					"name": { "type": "string" },
+					"slug": { "type": "string" },
+					"sku": { "type": "string" },
+					"description": { "type": "string" },
+					"price": { "type": "number" },
+					"currency": { "type": "string" },
+					"stock_quantity": { "type": "integer" },
+					"is_active": { "type": "boolean" },
+					"created_at": { "type": "string" },
+					"updated_at": { "type": "string" },
+					"meta_json": { "type": "string" }
+				}
+			}
+		}
+	}
+}
