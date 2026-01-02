@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import sql, { poolPromise } from "@/lib/mssql"
+import sql, { getPool } from "@/lib/mssql"
 
 export const runtime = "nodejs"
 
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
 	}
 
 	try {
-		const pool = await poolPromise
+		const pool = await getPool()
 
 		// Dinamik WHERE
 		const where: string[] = []

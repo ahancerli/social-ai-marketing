@@ -4,7 +4,7 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import bcrypt from "bcryptjs"
 import crypto from "crypto"
-import sql, { poolPromise } from "@/lib/mssql"
+import sql, { getPool } from "@/lib/mssql"
 import { Users } from "@/app/api/customer/type"
 
 const ADMIN_COOKIE = "admin_session"
@@ -89,7 +89,7 @@ export async function loginAction(formData: FormData) {
 		redirect(`/admin/auth/login?error=1&next=${encodeURIComponent(next)}`)
 	}
 
-	const pool = await poolPromise
+	const pool = await getPool() // ✅ önemli: () ve await
 	const passResult = await pool.request().input("user_id", sql.BigInt, customer.user_id).query(`
       SELECT TOP 1 [password]
       FROM app.users

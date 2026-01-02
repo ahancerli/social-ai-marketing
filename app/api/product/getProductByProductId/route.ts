@@ -1,6 +1,6 @@
 // website/app/api/product/getProductByProductId/route.ts
 import { NextRequest, NextResponse } from "next/server"
-import { poolPromise } from "@/lib/mssql"
+import { getPool } from "@/lib/mssql"
 
 export async function POST(req: NextRequest) {
 	const { product_id } = await req.json()
@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
 	}
 
 	try {
-		const pool = await poolPromise
+		const pool = await getPool()
 		const result = await pool.request().input("product_id", product_id).query(`
         SELECT * FROM catalog.products WHERE product_id = @product_id
       `)

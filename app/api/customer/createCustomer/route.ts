@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import sql, { poolPromise } from "@/lib/mssql"
+import sql, { getPool } from "@/lib/mssql"
 import bcrypt from "bcryptjs"
 
 export const runtime = "nodejs"
@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
 	}
 
 	try {
-		const pool = await poolPromise
+		const pool = await getPool() // ✅ önemli: () ve await
 
 		// çakışma kontrolü
 		const existsResult = await pool
