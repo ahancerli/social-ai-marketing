@@ -24,10 +24,7 @@ const NAV = [
 			{ label: "Customers", href: "/admin/customers", icon: Users },
 		],
 	},
-	{
-		title: "SETTINGS",
-		items: [{ label: "Settings", href: "/admin/settings", icon: Settings }],
-	},
+	{ title: "SETTINGS", items: [{ label: "Settings", href: "/admin/settings", icon: Settings }] },
 ]
 
 export default function AdminSidebar({ variant = "desktop" }: { variant?: "desktop" | "mobile" }) {
@@ -40,7 +37,6 @@ export default function AdminSidebar({ variant = "desktop" }: { variant?: "deskt
 				variant === "mobile" && "border-r-0",
 			)}
 		>
-			{/* Brand */}
 			<div className="h-16 px-5 flex items-center gap-3 border-b border-white/10">
 				<div className="h-10 w-10 rounded-xl bg-linear-to-br from-indigo-500 to-fuchsia-600" />
 				<div className="leading-tight">
@@ -49,7 +45,6 @@ export default function AdminSidebar({ variant = "desktop" }: { variant?: "deskt
 				</div>
 			</div>
 
-			{/* Menu */}
 			<div className="px-3 py-4 space-y-5">
 				{NAV.map((group) => (
 					<div key={group.title}>

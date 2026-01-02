@@ -25,7 +25,6 @@ export default function AdminTopbar() {
 	return (
 		<div className="sticky top-0 z-30 bg-white border-b border-slate-200">
 			<div className="h-16 px-4 md:px-6 flex items-center gap-3">
-				{/* Mobile menu */}
 				<div className="lg:hidden">
 					<Sheet>
 						<SheetTrigger asChild>
@@ -33,19 +32,12 @@ export default function AdminTopbar() {
 								<Menu className="h-5 w-5" />
 							</Button>
 						</SheetTrigger>
-						<SheetContent side="left" className="p-0 w-[290px]">
+						<SheetContent side="left" className="p-0 w-72.5">
 							<AdminSidebar variant="mobile" />
 						</SheetContent>
 					</Sheet>
 				</div>
 
-				{/* Breadcrumb / Title area (basit) */}
-				<div className="hidden md:block">
-					<div className="text-xs text-slate-500">Admin</div>
-					<div className="font-semibold leading-tight">Dashboard</div>
-				</div>
-
-				{/* Search (desktop) */}
 				<form
 					className="hidden md:block flex-1 max-w-xl"
 					onSubmit={(e) => {
@@ -64,12 +56,10 @@ export default function AdminTopbar() {
 					</div>
 				</form>
 
-				{/* Actions */}
 				<div className="ml-auto flex items-center gap-2">
 					<Button variant="outline" size="icon" aria-label="Notifications">
 						<Bell className="h-5 w-5" />
 					</Button>
-
 					<Button variant="outline" size="icon" aria-label="Settings">
 						<Settings className="h-5 w-5" />
 					</Button>
@@ -84,26 +74,26 @@ export default function AdminTopbar() {
 							</Button>
 						</DropdownMenuTrigger>
 
-						<DropdownMenuContent align="end" className="w-52">
+						<DropdownMenuContent align="end" className="w-56">
 							<DropdownMenuLabel>Account</DropdownMenuLabel>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem asChild>
-								<Link href="/admin/profile">Profile</Link>
-							</DropdownMenuItem>
-							<DropdownMenuItem asChild>
 								<Link href="/admin/settings">Settings</Link>
 							</DropdownMenuItem>
-							<DropdownMenuSeparator />
 							<DropdownMenuItem asChild>
 								<Link href="/">Go to Website</Link>
 							</DropdownMenuItem>
-							<DropdownMenuItem className="text-red-600">Logout</DropdownMenuItem>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem asChild>
+								<Link className="text-red-600" href="/admin/auth/logout">
+									Logout
+								</Link>
+							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</div>
 			</div>
 
-			{/* Mobile search */}
 			<div className="md:hidden px-4 pb-4">
 				<div className="relative">
 					<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />

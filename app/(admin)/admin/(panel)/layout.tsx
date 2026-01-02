@@ -3,10 +3,10 @@ import AdminTopbar from "./_components/admin-topbar"
 
 export const metadata = {
 	title: "Admin Panel",
-	description: "Admin dashboard",
+	description: "Velzon tarzı Admin Dashboard",
 }
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminPanelLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<div className="min-h-screen bg-slate-50">
 			<div className="flex">
@@ -15,7 +15,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 					<AdminSidebar variant="desktop" />
 				</aside>
 
-				{/* Content */}
+				{/* Main */}
 				<div className="flex-1 min-w-0">
 					<AdminTopbar />
 					<div className="px-4 md:px-6 py-6">{children}</div>
