@@ -56,9 +56,8 @@ export async function loginAction(formData: FormData) {
 		redirect(`/admin/auth/login?error=1&next=${encodeURIComponent(next)}`)
 	}
 
-	const baseUrl =
-		process.env.NEXT_PUBLIC_BASE_URL ||
-		(process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")
+	//base url belirtirken direk hangi linkte ise ona göre alsın
+	const baseUrl = process.env.BASE_URL || "http://localhost:3000"
 
 	const byEmail = isEmailFormat(identifier)
 
