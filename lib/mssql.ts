@@ -7,8 +7,8 @@ const config: sql.config = {
 	server: process.env.MSSQL_SERVER || "",
 	database: process.env.MSSQL_DATABASE,
 	options: {
-		encrypt: String(process.env.MSSQL_ENCRYPT).toLowerCase() === "true",
-		trustServerCertificate: String(process.env.MSSQL_TRUST_SERVER_CERT).toLowerCase() !== "false",
+		encrypt: true,
+		trustServerCertificate: true,
 	},
 }
 
