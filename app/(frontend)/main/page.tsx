@@ -17,7 +17,6 @@ export default async function MainHomePage() {
 	const featured: Product[] = [
 		{
 			product_id: 1,
-			seller_user_id: 1,
 			name: "Ürün 1",
 			slug: "urun-1",
 			sku: "SKU001",
@@ -32,7 +31,6 @@ export default async function MainHomePage() {
 		},
 		{
 			product_id: 2,
-			seller_user_id: 1,
 			name: "Ürün 2",
 			slug: "urun-2",
 			sku: "SKU002",

@@ -2,7 +2,6 @@
 
 export type Product = {
 	product_id: number
-	seller_user_id: number
 	name: string
 	slug: string
 	sku: string | null

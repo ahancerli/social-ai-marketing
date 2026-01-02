@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import sql, { poolPromise } from "@/lib/mssql"
+import bcrypt from "bcryptjs"
 
 export const runtime = "nodejs"
 
@@ -12,6 +13,8 @@ type CreateCustomerRequest = {
 	display_name: string
 	username: string
 	customer_number: string
+
+	password: string
 }
 
 function isNonEmptyString(v: unknown): v is string {
@@ -31,6 +34,12 @@ function safeInt(v: unknown) {
 	return Number.isInteger(n) ? n : NaN
 }
 
+function validatePassword(pw: string) {
+	// basit ama mantıklı kural: min 6
+	// istersen: büyük harf, sayı vs. ekleriz
+	return pw.length >= 6
+}
+
 export async function POST(req: NextRequest) {
 	let body: CreateCustomerRequest
 
@@ -46,7 +55,6 @@ export async function POST(req: NextRequest) {
 		return firstError("user_type_id is required and must be a positive integer", "user_type_id")
 	}
 
-	// ✅ status requestten alınacak
 	if (typeof body.status !== "boolean") {
 		return firstError("status is required and must be boolean", "status")
 	}
@@ -59,21 +67,29 @@ export async function POST(req: NextRequest) {
 	if (!isNonEmptyString(body.customer_number))
 		return firstError("customer_number is required", "customer_number")
 
+	// ✅ NEW
+	if (!isNonEmptyString(body.password)) return firstError("password is required", "password")
+
 	const email = normalizeEmail(body.email)
 	const phone = body.phone.trim()
 	const display_name = body.display_name.trim()
 	const username = body.username.trim()
 	const customer_number = body.customer_number.trim()
-	const status = body.status // ✅ artık tanımlı
+	const status = body.status
+	const password = body.password.trim()
 
 	if (!email.includes("@") || !email.includes(".")) {
 		return firstError("email is not valid", "email")
 	}
 
+	if (!validatePassword(password)) {
+		return firstError("password must be at least 6 characters", "password")
+	}
+
 	try {
 		const pool = await poolPromise
 
-		// Çakışma kontrolü: email / username / customer_number
+		// çakışma kontrolü
 		const existsResult = await pool
 			.request()
 			.input("email", sql.NVarChar(320), email)
@@ -91,16 +107,20 @@ export async function POST(req: NextRequest) {
 			)
 		}
 
-		// INSERT + OUTPUT
+		// ✅ password hash (DB'ye hash kaydediyoruz)
+		const passwordHash = await bcrypt.hash(password, 10)
+
 		const insertResult = await pool
 			.request()
 			.input("user_type_id", sql.Int, userTypeId)
-			.input("status", sql.Bit, status) // ✅ BIT olarak gönderiyoruz
+			.input("status", sql.Bit, status)
 			.input("email", sql.NVarChar(320), email)
 			.input("phone", sql.NVarChar(32), phone)
 			.input("display_name", sql.NVarChar(250), display_name)
 			.input("username", sql.NVarChar(64), username)
-			.input("customer_number", sql.NVarChar(64), customer_number).query(`
+			.input("customer_number", sql.NVarChar(64), customer_number)
+			.input("password", sql.NVarChar(255), passwordHash) // ✅ NEW
+			.query(`
         INSERT INTO app.users (
           user_type_id,
           status,
@@ -111,7 +131,8 @@ export async function POST(req: NextRequest) {
           created_at,
           updated_at,
           meta_json,
-          customer_number
+          customer_number,
+          password
         )
         OUTPUT
           INSERTED.user_id,
@@ -135,12 +156,12 @@ export async function POST(req: NextRequest) {
           SYSUTCDATETIME(),
           SYSUTCDATETIME(),
           NULL,
-          @customer_number
+          @customer_number,
+          @password
         )
       `)
 
 		const created = insertResult.recordset?.[0]
-
 		return NextResponse.json({ ok: true, customer: created }, { status: 201 })
 	} catch (err: unknown) {
 		console.error("createCustomer error:", err)

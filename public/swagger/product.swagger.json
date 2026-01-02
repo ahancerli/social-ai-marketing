@@ -47,7 +47,6 @@
 				"type": "object",
 				"properties": {
 					"product_id": { "type": "integer" },
-					"seller_user_id": { "type": "integer" },
 					"name": { "type": "string" },
 					"slug": { "type": "string" },
 					"sku": { "type": "string" },

@@ -1,12 +1,9 @@
-"use client"
+import SwaggerUIClient from "./_components/swagger-ui-client"
 
-import SwaggerUI from "swagger-ui-react"
-import "swagger-ui-react/swagger-ui.css"
+export const metadata = {
+	title: "Customer API Docs",
+}
 
 export default function CustomerSwaggerPage() {
-	return (
-		<div style={{ minHeight: "100vh" }}>
-			<SwaggerUI url="/api/customer/docs/swagger.json" />
-		</div>
-	)
+	return <SwaggerUIClient />
 }
