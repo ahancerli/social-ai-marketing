@@ -46,6 +46,7 @@ export default async function MainHomePage() {
 	]
 	return (
 		<div className="space-y-10 py-6 md:py-8">
+			<>Akman Hançerli</>
 			<HeroSection />
 			<BenefitsStrip />
 			<PromoBanners />
